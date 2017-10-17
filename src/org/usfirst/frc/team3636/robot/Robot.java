@@ -24,6 +24,8 @@ import org.usfirst.frc.team3636.robot.subsystems.ExampleSubsystem;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	
+	private static final boolean testCommit = true;
 
     public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
     public static OI oi;
@@ -33,14 +35,14 @@ public class Robot extends IterativeRobot {
     
     public Joystick leftStick = new Joystick(0);
     public Joystick rightStick = new Joystick(1);
-    public Button leftButton = new JoystickButton(leftStick, 0);
+    /*public Button leftButton = new JoystickButton(leftStick, 0);
     public Button rightButton = new JoystickButton(rightStick, 1);
-    public Spark s = new Spark(2);
+    public Spark s = new Spark(2); */
     Timer timer = new Timer();
 
 //    public final double autoleft = -.25; 
 //    public final double autoright = -.25;
-    public final double timerdelay = .1;
+//    public final double timerdelay = .1;
     public final int motorspeed = 1; 
     public final int TIME_AUTO = 6; //Change to autonomous time in seconds
     public final double AUTO_SPEED = .3; //This controls the speed of autonomous
@@ -153,17 +155,17 @@ public class Robot extends IterativeRobot {
         /*if (leftStick.getRawButton(3)) {
             //leftButton.whileHeld(new TestCommand());
         }*/
-        if (leftStick.getTrigger()){
-            s.set(motorspeed);
-            Timer.delay(timerdelay);
-        }
-        if (rightStick.getTrigger()){
-            s.set(-motorspeed);
-            Timer.delay(timerdelay);
-        }
-        else{
-            s.set(0);
-        }
+//        if (leftStick.getTrigger()){
+//            s.set(motorspeed);
+//            Timer.delay(timerdelay);
+//        }
+//        if (rightStick.getTrigger()){
+//            s.set(-motorspeed);
+//            Timer.delay(timerdelay);
+//        }
+//        else{
+//            s.set(0);
+//        }
     }
 
     /**
