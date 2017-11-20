@@ -56,7 +56,7 @@ public class Robot extends IterativeRobot {
     public final int TIME_AUTO = 6; //Change to autonomous time in seconds
     public final double AUTO_SPEED = .3; //This controls the speed of autonomous
     public final double CURVE_CHANGE =-.01;
-        
+    public final int BRIGHTNESS = 30;    
     Command autonomousCommand;
     SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -75,7 +75,7 @@ public class Robot extends IterativeRobot {
             UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
             camera.setResolution(640, 480);
             camera.setFPS(60);
-            
+            camera.setBrightness(BRIGHTNESS);
 //            CvSink cvSink = CameraServer.getInstance().getVideo();
 //            CvSource outputStream = CameraServer.getInstance().putVideo("Blur", 640, 480);
 //            
