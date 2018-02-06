@@ -9,18 +9,25 @@ import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.RobotState;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 import org.usfirst.frc.team3636.robot.commands.ExampleCommand;
 import org.usfirst.frc.team3636.robot.subsystems.ExampleSubsystem;
@@ -41,9 +48,21 @@ public class Robot extends IterativeRobot {
     
     RobotDrive myRobot = new RobotDrive(0, 1); // class that handles basic drive
     // operations
-    
+//    Spark m_frontLeft = new Spark(4);
+//    Spark m_rearLeft = new Spark(2);
+//    SpeedControllerGroup m_left = new SpeedControllerGroup(m_frontLeft, m_rearLeft);
+//
+//    Spark m_frontRight = new Spark(5);
+//    Spark m_rearRight = new Spark(3);
+//    SpeedControllerGroup m_right = new SpeedControllerGroup(m_frontRight, m_rearRight);
+//
+//    DifferentialDrive myRobot = new DifferentialDrive(m_left, m_right);
     public Joystick leftStick = new Joystick(0);
     public Joystick rightStick = new Joystick(1);
+//    public Solenoid sol = new Solenoid(0,0); //device id 1, channel 0
+    public DoubleSolenoid sol = new DoubleSolenoid(0,1,2); //device id 1, channel 0
+    public Compressor com = new Compressor(0);
+    
     /*public Button leftButton = new JoystickButton(leftStick, 0);
     public Button rightButton = new JoystickButton(rightStick, 1);
     public Spark s = new Spark(2); */
@@ -53,9 +72,9 @@ public class Robot extends IterativeRobot {
 //    public final double autoright = -.25;
 //    public final double timerdelay = .1;
     public final int motorspeed = 1; 
-    public final int TIME_AUTO = 6; //Change to autonomous time in seconds
-    public final double AUTO_SPEED = .3; //This controls the speed of autonomous
-    public final double CURVE_CHANGE =-.01;
+    public final int TIME_AUTO = 15; //Change to autonomous time in seconds
+    public final double AUTO_SPEED = .5; //This controls the speed of autonomous
+    public double CURVE_CHANGE =-.01;
     public final int BRIGHTNESS = 30;    
     Command autonomousCommand;
     SendableChooser<Command> chooser = new SendableChooser<>();
@@ -140,20 +159,28 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
-        System.out.println("time: " + timer.get());
-        while (timer.get() < TIME_AUTO){
-        	myRobot.drive(AUTO_SPEED,CURVE_CHANGE);
-        	//myRobot.tankDrive(AUTO_SPEED,AUTO_SPEED);
+        boolean experimentOn = true;
+        if (experimentOn == false){
+	        System.out.println("time: " + timer.get());
+	        while (timer.get() < TIME_AUTO && RobotState.isAutonomous()){
+	        	//myRobot.drive(AUTO_SPEED,CURVE_CHANGE);
+	        	myRobot.tankDrive(AUTO_SPEED,AUTO_SPEED-.1);
+	        
+	        	
+	        }
         }
-//        teleopInit();
-//        teleopPeriodic();
-        /*if(timer.get()<15){
-        	myRobot.tankDrive(autoleft,autoright);
-        	
+        //more experiments:
+        else if (experimentOn == true){
+	        while (timer.get() < TIME_AUTO && RobotState.isAutonomous()){
+	        	CURVE_CHANGE = .15; //turn right
+	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
+	        	Timer.delay(.1);
+	        	CURVE_CHANGE = -.1; //turn left
+	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
+	        	Timer.delay(.1);
+	        }
         }
-        else{
-            myRobot.tankDrive(0, 0);
-        }*/
+        
     }
 
     @Override
@@ -178,18 +205,59 @@ public class Robot extends IterativeRobot {
         double rightval= -rightStick.getY();
         myRobot.tankDrive(leftval, rightval);
         Timer.delay(0.005); // wait for a motor update time
+//        com.start();
         
+//        boolean enabled = com.enabled();
+        boolean pressureSwitch = com.getPressureSwitchValue();
+//        double current = com.getCompressorCurrent();
         /*if (leftStick.getRawButton(3)) {
-            //leftButton.whileHeld(new TestCommand());
+            //leftB`utton.whileHeld(new TestCommand());
         }*/
-//        if (leftStick.getTrigger()){
-//            s.set(motorspeed);
-//            Timer.delay(timerdelay);
+        
+        double duration = 3.0;
+        if (leftStick.getTrigger()){
+//        	if(com.getPressureSwitchValue()){
+//        	System.out.println(com.getClosedLoopControl());
+//        	}
+        	System.out.println(pressureSwitch);
+//        	myRobot.tankDrive(.5, 0);
+        	com.setClosedLoopControl(true);
+
+//        	sol.set(DoubleSolenoid.Value.kForward);
+//        	com.start();
+//        	System.out.println(com.enabled());
+        	
+        	
+        	timer.delay(0.005);
+        	
+        
+        }
+        else{
+        	com.setClosedLoopControl(false);
+        	System.out.println(pressureSwitch);
+//        	timer.delay(.005);
+        	/*if(com.enabled()){
+        		com.stop();
+        	}*/
+        }
+        if (rightStick.getTrigger()){
+        	//sol.set(DoubleSolenoid.Value.kReverse);
+        	sol.set(DoubleSolenoid.Value.kReverse);
+        	//sol.set(DoubleSolenoid.Value.);
+//        	System.out.println(sol.get());
+//        	sol.set(false);
+        	//com.stop();
+        	timer.delay(0.005);
+//            com.set(false);
+//            com.setPulseDuration(duration);
+//            com.startPulse();
+        }
+//        else{
+////        	sol.set(DoubleSolenoid.Value.kOff);
+//        
+//        	
 //        }
-//        if (rightStick.getTrigger()){
-//            s.set(-motorspeed);
-//            Timer.delay(timerdelay);
-//        }
+        
 //        else{
 //            s.set(0);
 //        }
@@ -200,6 +268,6 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void testPeriodic() {
-        LiveWindow.run();
+        //LiveWindow.run();
     }
 }
