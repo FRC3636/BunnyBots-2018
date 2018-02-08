@@ -205,8 +205,7 @@ public class Robot extends IterativeRobot {
         double rightval= -rightStick.getY();
         myRobot.tankDrive(leftval, rightval);
         Timer.delay(0.005); // wait for a motor update time
-//        com.start();
-        
+       
 //        boolean enabled = com.enabled();
         boolean pressureSwitch = com.getPressureSwitchValue();
 //        double current = com.getCompressorCurrent();
@@ -215,15 +214,24 @@ public class Robot extends IterativeRobot {
         }*/
         
         double duration = 3.0;
+
+        if(leftStick.getRawButton(3)){
+        	com.setClosedLoopControl(true);
+        	timer.delay(.005);
+        }
+        else{
+        	com.setClosedLoopControl(false);
+        	timer.delay(.005);
+        }
         if (leftStick.getTrigger()){
 //        	if(com.getPressureSwitchValue()){
 //        	System.out.println(com.getClosedLoopControl());
 //        	}
         	System.out.println(pressureSwitch);
 //        	myRobot.tankDrive(.5, 0);
-        	com.setClosedLoopControl(true);
+//        	com.setClosedLoopControl(true);
 
-//        	sol.set(DoubleSolenoid.Value.kForward);
+        	sol.set(DoubleSolenoid.Value.kForward);
 //        	com.start();
 //        	System.out.println(com.enabled());
         	
@@ -232,14 +240,14 @@ public class Robot extends IterativeRobot {
         	
         
         }
-        else{
-        	com.setClosedLoopControl(false);
-        	System.out.println(pressureSwitch);
-//        	timer.delay(.005);
-        	/*if(com.enabled()){
-        		com.stop();
-        	}*/
-        }
+//        else{
+////        	com.setClosedLoopControl(false);
+//        	System.out.println(pressureSwitch);
+////        	timer.delay(.005);
+//        	/*if(com.enabled()){
+//        		com.stop();
+//        	}*/
+//        }
         if (rightStick.getTrigger()){
         	//sol.set(DoubleSolenoid.Value.kReverse);
         	sol.set(DoubleSolenoid.Value.kReverse);
