@@ -59,8 +59,9 @@ public class Robot extends IterativeRobot {
 //    DifferentialDrive myRobot = new DifferentialDrive(m_left, m_right);
     public Joystick leftStick = new Joystick(0);
     public Joystick rightStick = new Joystick(1);
-//    public Solenoid sol = new Solenoid(0,0); //device id 1, channel 0
-    public DoubleSolenoid sol = new DoubleSolenoid(0,1,2); //device id 1, channel 0
+    public Solenoid sol = new Solenoid(0,0); //device id 0, channel 0
+    public Solenoid sol2 = new Solenoid(0,1); //device id 0, channel 1
+//    public DoubleSolenoid sol = new DoubleSolenoid(1,2); //device id 0, channel 1,2
     public Compressor com = new Compressor(0);
     
     /*public Button leftButton = new JoystickButton(leftStick, 0);
@@ -230,8 +231,8 @@ public class Robot extends IterativeRobot {
         	System.out.println(pressureSwitch);
 //        	myRobot.tankDrive(.5, 0);
 //        	com.setClosedLoopControl(true);
-
-        	sol.set(DoubleSolenoid.Value.kForward);
+        	sol.set(true);
+        	sol2.set(false);
 //        	com.start();
 //        	System.out.println(com.enabled());
         	
@@ -249,8 +250,11 @@ public class Robot extends IterativeRobot {
 //        	}*/
 //        }
         if (rightStick.getTrigger()){
-        	//sol.set(DoubleSolenoid.Value.kReverse);
-        	sol.set(DoubleSolenoid.Value.kReverse);
+        	
+        	sol.set(false);
+        	sol2.set(true);
+//        	sol.set(DoubleSolenoid.Value.kReverse);
+//        	sol.set(false);
         	//sol.set(DoubleSolenoid.Value.);
 //        	System.out.println(sol.get());
 //        	sol.set(false);
