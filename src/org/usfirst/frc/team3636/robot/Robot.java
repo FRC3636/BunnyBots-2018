@@ -232,7 +232,7 @@ public class Robot extends IterativeRobot {
 //        	myRobot.tankDrive(.5, 0);
 //        	com.setClosedLoopControl(true);
         	sol.set(true);
-        	sol2.set(false);
+        	sol2.set(false);//
 //        	com.start();
 //        	System.out.println(com.enabled());
         	
