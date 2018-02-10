@@ -10,6 +10,7 @@ import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -60,9 +61,11 @@ public class Robot extends IterativeRobot {
     public Joystick leftStick = new Joystick(0);
     public Joystick rightStick = new Joystick(1);
     public Solenoid sol = new Solenoid(0,0); //device id 0, channel 0
-    public Solenoid sol2 = new Solenoid(0,1); //device id 0, channel 1
-//    public DoubleSolenoid sol = new DoubleSolenoid(1,2); //device id 0, channel 1,2
+//    public Solenoid sol2 = new Solenoid(0,1); //device id 0, channel 1
+    public DoubleSolenoid sol2 = new DoubleSolenoid(1,2); //device id 0, channel 1,2
     public Compressor com = new Compressor(0);
+    public DigitalInput leftSwitch = new DigitalInput(0);
+    public DigitalInput rightSwitch = new DigitalInput(1);
     
     /*public Button leftButton = new JoystickButton(leftStick, 0);
     public Button rightButton = new JoystickButton(rightStick, 1);
@@ -160,26 +163,42 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
-        boolean experimentOn = true;
-        if (experimentOn == false){
-	        System.out.println("time: " + timer.get());
-	        while (timer.get() < TIME_AUTO && RobotState.isAutonomous()){
-	        	//myRobot.drive(AUTO_SPEED,CURVE_CHANGE);
-	        	myRobot.tankDrive(AUTO_SPEED,AUTO_SPEED-.1);
-	        
-	        	
-	        }
-        }
-        //more experiments:
-        else if (experimentOn == true){
-	        while (timer.get() < TIME_AUTO && RobotState.isAutonomous()){
-	        	CURVE_CHANGE = .15; //turn right
-	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
-	        	Timer.delay(.1);
-	        	CURVE_CHANGE = -.1; //turn left
-	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
-	        	Timer.delay(.1);
-	        }
+        boolean leftOn = leftSwitch.get();
+        boolean rightOn = rightSwitch.get();
+//        boolean experimentOn = true;
+//        if (experimentOn == false){
+//	        System.out.println("time: " + timer.get());
+//	        while (timer.get() < TIME_AUTO && RobotState.isAutonomous()){
+//	        	//myRobot.drive(AUTO_SPEED,CURVE_CHANGE);
+//	        	myRobot.tankDrive(AUTO_SPEED,AUTO_SPEED-.1);
+//	        
+//	        	
+//	        }
+//        }
+//        //more experiments:
+//        else if (experimentOn == true){
+//	        while (timer.get() < TIME_AUTO && RobotState.isAutonomous()){
+//	        	CURVE_CHANGE = .15; //turn right
+//	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
+//	        	Timer.delay(.1);
+//	        	CURVE_CHANGE = -.1; //turn left
+//	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
+//	        	Timer.delay(.1);
+//	        }
+//        }
+        while (timer.get() < TIME_AUTO && RobotState.isAutonomous()){
+        	//myRobot.drive(AUTO_SPEED,CURVE_CHANGE);
+        	if(leftOn){
+        		System.out.println("left");
+        	}
+        	else if(!leftOn && rightOn){
+        		System.out.println("right");
+        	}
+        	else{
+        		System.out.println("mid");
+        	}
+        
+        	
         }
         
     }
@@ -193,7 +212,8 @@ public class Robot extends IterativeRobot {
         if (autonomousCommand != null)
             autonomousCommand.cancel();
         myRobot.setSafetyEnabled(true);
-        
+        //sol.set(false);
+        sol2.set(DoubleSolenoid.Value.kOff);
     }
 
     /**
@@ -224,15 +244,15 @@ public class Robot extends IterativeRobot {
         	com.setClosedLoopControl(false);
         	timer.delay(.005);
         }
-        if (leftStick.getTrigger()){
+        if (leftStick.getTrigger()){ //Retract piston
 //        	if(com.getPressureSwitchValue()){
 //        	System.out.println(com.getClosedLoopControl());
 //        	}
         	System.out.println(pressureSwitch);
 //        	myRobot.tankDrive(.5, 0);
 //        	com.setClosedLoopControl(true);
-        	sol.set(true);
-        	sol2.set(false);//
+        	sol2.set(DoubleSolenoid.Value.kForward);
+        	//sol2.set(false);//
 //        	com.start();
 //        	System.out.println(com.enabled());
         	
@@ -241,18 +261,14 @@ public class Robot extends IterativeRobot {
         	
         
         }
-//        else{
-////        	com.setClosedLoopControl(false);
-//        	System.out.println(pressureSwitch);
-////        	timer.delay(.005);
-//        	/*if(com.enabled()){
-//        		com.stop();
-//        	}*/
-//        }
-        if (rightStick.getTrigger()){
+        /*else{
+        	sol2.set(DoubleSolenoid.Value.kOff);
+        	timer.delay(0.005);
+        }*/
+        else if (rightStick.getTrigger()){//Extend piston
         	
-        	sol.set(false);
-        	sol2.set(true);
+        	//sol.set(false);
+        	sol2.set(DoubleSolenoid.Value.kReverse);
 //        	sol.set(DoubleSolenoid.Value.kReverse);
 //        	sol.set(false);
         	//sol.set(DoubleSolenoid.Value.);
@@ -264,11 +280,10 @@ public class Robot extends IterativeRobot {
 //            com.setPulseDuration(duration);
 //            com.startPulse();
         }
-//        else{
-////        	sol.set(DoubleSolenoid.Value.kOff);
-//        
-//        	
-//        }
+        else{
+        	sol2.set(DoubleSolenoid.Value.kOff);
+        	timer.delay(0.005);
+        }
         
 //        else{
 //            s.set(0);
