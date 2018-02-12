@@ -163,8 +163,6 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
-        boolean leftOn = leftSwitch.get();
-        boolean rightOn = rightSwitch.get();
 //        boolean experimentOn = true;
 //        if (experimentOn == false){
 //	        System.out.println("time: " + timer.get());
@@ -186,8 +184,12 @@ public class Robot extends IterativeRobot {
 //	        	Timer.delay(.1);
 //	        }
 //        }
+        boolean leftOn;
+        boolean rightOn;
         while (timer.get() < TIME_AUTO && RobotState.isAutonomous()){
         	//myRobot.drive(AUTO_SPEED,CURVE_CHANGE);
+        	leftOn = leftSwitch.get();
+            rightOn = rightSwitch.get();
         	if(leftOn){
         		System.out.println("left");
         	}
@@ -236,14 +238,14 @@ public class Robot extends IterativeRobot {
         
         double duration = 3.0;
 
-        if(leftStick.getRawButton(3)){
-        	com.setClosedLoopControl(true);
-        	timer.delay(.005);
-        }
-        else{
-        	com.setClosedLoopControl(false);
-        	timer.delay(.005);
-        }
+//        if(leftStick.getRawButton(3)){
+//        	com.setClosedLoopControl(true);
+//        	timer.delay(.005);
+//        }
+//        else{
+//        	com.setClosedLoopControl(false);
+//        	timer.delay(.005);
+//        }
         if (leftStick.getTrigger()){ //Retract piston
 //        	if(com.getPressureSwitchValue()){
 //        	System.out.println(com.getClosedLoopControl());
