@@ -72,7 +72,7 @@ public class AutoLeftCommand extends Command {
 		}	
 	}
 
-	// Called once after isFinished returns true
+	// Called once after isFinished returns true.
 	@Override
 	protected void end() {
 		Robot.myRobot.tankDrive(0,0);
