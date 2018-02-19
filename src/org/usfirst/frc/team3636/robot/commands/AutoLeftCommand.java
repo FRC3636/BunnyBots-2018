@@ -24,33 +24,44 @@ public class AutoLeftCommand extends Command {
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
         if(gameData.length() > 0){
-        	if(gameData.charAt(0) == 'L'){
+        	if(gameData.charAt(0) == 'L'){//if game data starts with L
         		while(Robot.timer.get()<5){
+        			Robot.liftArm.set(1);
+					Robot.liftArm2.set(1);
+					Timer.delay(.005);
 					Robot.myRobot.tankDrive(Robot.AUTO_SPEED,Robot.AUTO_SPEED+.075);
+					Timer.delay(.005);
 				}
 				Robot.myRobot.tankDrive(0,0);
 				Timer.delay(1);
-				Robot.myRobot.tankDrive(Robot.AUTO_SPEED,0); //turn right towards switch
-				while(Robot.timer.get()<9){//for 3 seconds the fly wheel will spin
-					Robot.flywheel.set(1);
-					Robot.flywheel2.set(1);
+				
+				Robot.myRobot.tankDrive(Robot.AUTO_SPEED,0);
+				Timer.delay(.005);//turn right towards switch
+				while(Robot.timer.get()<2){
+					Robot.myRobot.tankDrive(Robot.AUTO_SPEED,Robot.AUTO_SPEED+.075);
 					Timer.delay(.005);
 				}
-				while(Robot.timer.get()<12){//for 3 seconds the shooter executes
+				Robot.myRobot.tankDrive(0,0);
+				Timer.delay(.005);
+//				while(Robot.timer.get()> 5 && Robot.timer.get()<9){//for 3 seconds the fly wheel will spin
+//					
+//					
+//				}
+				while(Robot.timer.get()>=9 && Robot.timer.get()<=12){//for 3 seconds the shooter executes
 					Robot.shooter.set(1);
 					Robot.shooter2.set(1);
 					Timer.delay(.005);
 				}
 //        		System.out.println("box time");
         	}	
-			else{
+			else{//if game data starts with R
 				if(Robot.timer.get()<10){
 					Robot.myRobot.tankDrive(Robot.AUTO_SPEED,Robot.AUTO_SPEED+.075);
 					Timer.delay(.005);
 				}
 //				System.out.println("straight");
 			}
-        } 
+       } 
        else {
     	   if(Robot.timer.get()<10){
     		   Robot.myRobot.tankDrive(Robot.AUTO_SPEED,Robot.AUTO_SPEED+.075);
@@ -76,8 +87,8 @@ public class AutoLeftCommand extends Command {
 	@Override
 	protected void end() {
 		Robot.myRobot.tankDrive(0,0);
-		Robot.flywheel.set(0);
-		Robot.flywheel2.set(0);
+		Robot.liftArm.set(0);
+		Robot.liftArm2.set(0);
 		Robot.shooter.set(0);
 		Robot.shooter2.set(0);
 	}

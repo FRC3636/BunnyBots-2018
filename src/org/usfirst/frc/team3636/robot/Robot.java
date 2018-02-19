@@ -72,8 +72,8 @@ public class Robot extends IterativeRobot {
     public ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
     public static Spark shooter = new Spark(4);
     public static Spark shooter2 = new Spark(5);
-    public static Spark flywheel = new Spark(6);
-    public static Spark flywheel2 = new Spark(7);
+    public static Spark liftArm = new Spark(6);
+    public static Spark liftArm2 = new Spark(7);
     
     public static Timer timer = new Timer();
 
@@ -319,8 +319,8 @@ public class Robot extends IterativeRobot {
         	timer.delay(0.005);
         }
         else if(leftStick.getRawButton(3)){
-        	flywheel.set(1.0);
-        	flywheel2.set(1.0);
+        	liftArm.set(1.0);
+        	liftArm2.set(1.0);
         	timer.delay(0.005);
         }
         else if(rightStick.getRawButton(3)){
@@ -333,8 +333,8 @@ public class Robot extends IterativeRobot {
         	sol2.set(DoubleSolenoid.Value.kOff);
         	shooter.set(0);
         	shooter2.set(0);
-        	flywheel.set(0);
-        	flywheel2.set(0);
+        	liftArm.set(0);
+        	liftArm2.set(0);
         	timer.delay(0.005);
         }
         
