@@ -34,16 +34,19 @@ public class AutoLeftCommand extends Command {
 				while(Robot.timer.get()<9){//for 3 seconds the fly wheel will spin
 					Robot.flywheel.set(1);
 					Robot.flywheel2.set(1);
+					Timer.delay(.005);
 				}
 				while(Robot.timer.get()<12){//for 3 seconds the shooter executes
 					Robot.shooter.set(1);
 					Robot.shooter2.set(1);
+					Timer.delay(.005);
 				}
 //        		System.out.println("box time");
         	}	
 			else{
 				if(Robot.timer.get()<10){
 					Robot.myRobot.tankDrive(Robot.AUTO_SPEED,Robot.AUTO_SPEED+.075);
+					Timer.delay(.005);
 				}
 //				System.out.println("straight");
 			}
@@ -51,6 +54,7 @@ public class AutoLeftCommand extends Command {
        else {
     	   if(Robot.timer.get()<10){
     		   Robot.myRobot.tankDrive(Robot.AUTO_SPEED,Robot.AUTO_SPEED+.075);
+    		   Timer.delay(.005);
     	   }
        }
           
