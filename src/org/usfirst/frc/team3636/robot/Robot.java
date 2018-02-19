@@ -8,6 +8,7 @@ import org.opencv.imgproc.Imgproc;
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -16,6 +17,8 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.RobotState;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -29,7 +32,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
+import org.usfirst.frc.team3636.robot.commands.AutoLeftCommand;
+import org.usfirst.frc.team3636.robot.commands.AutoRightCommand;
 import org.usfirst.frc.team3636.robot.commands.ExampleCommand;
 import org.usfirst.frc.team3636.robot.subsystems.ExampleSubsystem;
 
@@ -42,12 +46,12 @@ import org.usfirst.frc.team3636.robot.subsystems.ExampleSubsystem;
  */
 public class Robot extends IterativeRobot {
 	
-	private static final boolean testCommit = true;
+//	private static final boolean testCommit = true;
 
     public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
     public static OI oi;
     
-    RobotDrive myRobot = new RobotDrive(0, 1); // class that handles basic drive
+    public static RobotDrive myRobot = new RobotDrive(0,1,2,3); // class that handles basic drive
     // operations
 //    Spark m_frontLeft = new Spark(4);
 //    Spark m_rearLeft = new Spark(2);
@@ -61,27 +65,29 @@ public class Robot extends IterativeRobot {
     public Joystick leftStick = new Joystick(0);
     public Joystick rightStick = new Joystick(1);
     public Solenoid sol = new Solenoid(0,0); //device id 0, channel 0
-//    public Solenoid sol2 = new Solenoid(0,1); //device id 0, channel 1
     public DoubleSolenoid sol2 = new DoubleSolenoid(1,2); //device id 0, channel 1,2
     public Compressor com = new Compressor(0);
     public DigitalInput leftSwitch = new DigitalInput(0);
     public DigitalInput rightSwitch = new DigitalInput(1);
+    public ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+    public static Spark shooter = new Spark(4);
+    public static Spark shooter2 = new Spark(5);
+    public static Spark flywheel = new Spark(6);
+    public static Spark flywheel2 = new Spark(7);
     
-    /*public Button leftButton = new JoystickButton(leftStick, 0);
-    public Button rightButton = new JoystickButton(rightStick, 1);
-    public Spark s = new Spark(2); */
-    Timer timer = new Timer();
+    public static Timer timer = new Timer();
 
 //    public final double autoleft = -.25; 
 //    public final double autoright = -.25;
 //    public final double timerdelay = .1;
     public final int motorspeed = 1; 
-    public final int TIME_AUTO = 15; //Change to autonomous time in seconds
-    public final double AUTO_SPEED = .5; //This controls the speed of autonomous
+    public static final int TIME_AUTO = 15; //Change to autonomous time in seconds
+    public static final double AUTO_SPEED = -.5; //This controls the speed of autonomous
     public double CURVE_CHANGE =-.01;
-    public final int BRIGHTNESS = 30;    
+    public final int BRIGHTNESS = 30;
+    public final double Kp = 0.03;
     Command autonomousCommand;
-    SendableChooser<Command> chooser = new SendableChooser<>();
+    SendableChooser chooser = new SendableChooser();
 
     /**
      * This function is run when the robot is first started up and should be
@@ -91,9 +97,10 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	//this comment lamo
         oi = new OI();
-        chooser.addDefault("Default Auto", new ExampleCommand());
-        // chooser.addObject("My Auto", new MyAutoCommand());
-        SmartDashboard.putData("Auto mode", chooser);
+        chooser.addDefault("Middle Auto", new ExampleCommand());
+        chooser.addObject("Left Auto", new AutoLeftCommand());
+        chooser.addObject("Right Auto", new AutoRightCommand());
+        SmartDashboard.putData("Auto mode chooser", chooser);
         new Thread(() -> {
             UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
             camera.setResolution(640, 480);
@@ -141,7 +148,7 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void autonomousInit() {
-        autonomousCommand = chooser.getSelected();
+        autonomousCommand = (Command) chooser.getSelected();
         timer.reset();
         timer.start();
         /*
@@ -163,45 +170,72 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
-//        boolean experimentOn = true;
-//        if (experimentOn == false){
-//	        System.out.println("time: " + timer.get());
-//	        while (timer.get() < TIME_AUTO && RobotState.isAutonomous()){
-//	        	//myRobot.drive(AUTO_SPEED,CURVE_CHANGE);
-//	        	myRobot.tankDrive(AUTO_SPEED,AUTO_SPEED-.1);
-//	        
-//	        	
-//	        }
+////        boolean experimentOn = true;
+////        if (experimentOn == false){
+////	        System.out.println("time: " + timer.get());
+////	        while (timer.get() < TIME_AUTO && RobotState.isAutonomous()){
+////	        	//myRobot.drive(AUTO_SPEED,CURVE_CHANGE);
+////	        	myRobot.tankDrive(AUTO_SPEED,AUTO_SPEED+.075);
+////	        
+////	        	
+////	        }
+////        }
+////        //more experiments:   
+////        else if (experimentOn == true){
+////        	gyro.reset();
+////	        while (timer.get() < TIME_AUTO && RobotState.isAutonomous()){
+////	        	double angle = gyro.getAngle();
+//////	    		myRobot.drive(-1.0, -angle * Kp);
+//////	    		Timer.delay(0.005);
+////	    		CURVE_CHANGE = .15; //turn right
+////	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
+////	        	Timer.delay(.1);
+////	        	CURVE_CHANGE = -.1; //turn left
+////	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
+////	        	Timer.delay(.1);
+////	        }
+////        }
+//        boolean leftOn=false;
+//        boolean rightOn=false;
+//        
+//        while (timer.get() < TIME_AUTO && RobotState.isAutonomous()){
+//        	leftOn = leftSwitch.get();
+//            rightOn = rightSwitch.get();
+//        	if(leftOn && rightOn){ //Left mode
+//        		System.out.println(rightOn);
+//        		System.out.println("right ");
+////        		CURVE_CHANGE = .15; //turn right
+////	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
+////	        	Timer.delay(.1);
+////	        	CURVE_CHANGE = -.1; //turn left
+////	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
+////	        	Timer.delay(.1);
+//        	}
+//        	else if(!leftOn && rightOn){ //Right mode
+//        		System.out.println("right");
+////        		CURVE_CHANGE = .15; //turn right
+////	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
+////	        	Timer.delay(.1);
+////	        	CURVE_CHANGE = -.1; //turn left
+////	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
+////	        	Timer.delay(.1);
+//        	}
+//        	else{// Middle mode w/ box dump
+//        		System.out.println(leftOn);
+////        		while(timer.get() <4){
+////        			CURVE_CHANGE = .15; //turn right
+////    	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
+////    	        	Timer.delay(.1);
+////    	        	CURVE_CHANGE = -.1; //turn left
+////    	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
+////    	        	Timer.delay(.1);
+////        		}
+//        		//Pneumatics code here
+//        		 
+//        	}
+//        	timer.delay(.005);
+//        	
 //        }
-//        //more experiments:
-//        else if (experimentOn == true){
-//	        while (timer.get() < TIME_AUTO && RobotState.isAutonomous()){
-//	        	CURVE_CHANGE = .15; //turn right
-//	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
-//	        	Timer.delay(.1);
-//	        	CURVE_CHANGE = -.1; //turn left
-//	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
-//	        	Timer.delay(.1);
-//	        }
-//        }
-        boolean leftOn;
-        boolean rightOn;
-        while (timer.get() < TIME_AUTO && RobotState.isAutonomous()){
-        	//myRobot.drive(AUTO_SPEED,CURVE_CHANGE);
-        	leftOn = leftSwitch.get();
-            rightOn = rightSwitch.get();
-        	if(leftOn){
-        		System.out.println("left");
-        	}
-        	else if(!leftOn && rightOn){
-        		System.out.println("right");
-        	}
-        	else{
-        		System.out.println("mid");
-        	}
-        
-        	
-        }
         
     }
 
@@ -224,29 +258,16 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        double leftval = -leftStick.getY();
-        double rightval= -rightStick.getY();
+        double leftval = leftStick.getY();
+        double rightval= rightStick.getY();
         myRobot.tankDrive(leftval, rightval);
         Timer.delay(0.005); // wait for a motor update time
-       
-//        boolean enabled = com.enabled();
         boolean pressureSwitch = com.getPressureSwitchValue();
-//        double current = com.getCompressorCurrent();
-        /*if (leftStick.getRawButton(3)) {
-            //leftB`utton.whileHeld(new TestCommand());
-        }*/
+
         
         double duration = 3.0;
 
-//        if(leftStick.getRawButton(3)){
-//        	com.setClosedLoopControl(true);
-//        	timer.delay(.005);
-//        }
-//        else{
-//        	com.setClosedLoopControl(false);
-//        	timer.delay(.005);
-//        }
-        if (leftStick.getTrigger()){ //Retract piston
+        if (leftStick.getTrigger()){ //Extend piston
 //        	if(com.getPressureSwitchValue()){
 //        	System.out.println(com.getClosedLoopControl());
 //        	}
@@ -267,7 +288,7 @@ public class Robot extends IterativeRobot {
         	sol2.set(DoubleSolenoid.Value.kOff);
         	timer.delay(0.005);
         }*/
-        else if (rightStick.getTrigger()){//Extend piston
+        else if (rightStick.getTrigger()){//Retract piston
         	
         	//sol.set(false);
         	sol2.set(DoubleSolenoid.Value.kReverse);
@@ -282,14 +303,41 @@ public class Robot extends IterativeRobot {
 //            com.setPulseDuration(duration);
 //            com.startPulse();
         }
+        else if(rightStick.getRawButton(4)){//Retract with single solenoid
+        	sol2.set(DoubleSolenoid.Value.kReverse);
+        	sol.set(true);
+        	timer.delay(0.005);
+        }
+        else if(leftStick.getRawButton(2)){
+        	shooter.set(1.0);
+        	shooter2.set(1.0);
+        	timer.delay(0.005);
+        }
+        else if(rightStick.getRawButton(2)){
+        	shooter.set(-1.0);
+        	shooter2.set(-1.0);
+        	timer.delay(0.005);
+        }
+        else if(leftStick.getRawButton(3)){
+        	flywheel.set(1.0);
+        	flywheel2.set(1.0);
+        	timer.delay(0.005);
+        }
+        else if(rightStick.getRawButton(3)){
+        	shooter.set(-1.0);
+        	shooter2.set(-1.0);
+        	timer.delay(0.005);
+        }
         else{
+        	sol.set(false);
         	sol2.set(DoubleSolenoid.Value.kOff);
+        	shooter.set(0);
+        	shooter2.set(0);
+        	flywheel.set(0);
+        	flywheel2.set(0);
         	timer.delay(0.005);
         }
         
-//        else{
-//            s.set(0);
-//        }
     }
 
     /**
