@@ -9,8 +9,8 @@ import org.usfirst.frc.team3636.robot.Robot;
 /**
  *
  */
-public class ExampleCommand extends Command {
-	public ExampleCommand() {
+public class AutoMid extends Command {
+	public AutoMid() {
 		// Use requires() here to declare subsystem dependencies
 		requires(Robot.exampleSubsystem);
 	}
@@ -41,6 +41,7 @@ public class ExampleCommand extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
+		Robot.myRobot.tankDrive(0,0);
 	}
 
 	// Called when another command which requires one or more of the same

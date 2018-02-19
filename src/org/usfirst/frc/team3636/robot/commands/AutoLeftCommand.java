@@ -75,6 +75,7 @@ public class AutoLeftCommand extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
+		Robot.myRobot.tankDrive(0,0);
 		Robot.flywheel.set(0);
 		Robot.flywheel2.set(0);
 		Robot.shooter.set(0);

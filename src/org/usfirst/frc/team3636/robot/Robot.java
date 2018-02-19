@@ -34,7 +34,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team3636.robot.commands.AutoLeftCommand;
 import org.usfirst.frc.team3636.robot.commands.AutoRightCommand;
-import org.usfirst.frc.team3636.robot.commands.ExampleCommand;
+import org.usfirst.frc.team3636.robot.commands.AutoMid;
 import org.usfirst.frc.team3636.robot.subsystems.ExampleSubsystem;
 
 /**
@@ -97,7 +97,7 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	//this comment lamo
         oi = new OI();
-        chooser.addDefault("Middle Auto", new ExampleCommand());
+        chooser.addDefault("Middle Auto/Left Straight Auto/Right Straight Auto", new AutoMid());
         chooser.addObject("Left Auto", new AutoLeftCommand());
         chooser.addObject("Right Auto", new AutoRightCommand());
         SmartDashboard.putData("Auto mode chooser", chooser);

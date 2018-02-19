@@ -72,6 +72,11 @@ public class AutoRightCommand extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
+		Robot.myRobot.tankDrive(0,0);
+		Robot.flywheel.set(0);
+		Robot.flywheel2.set(0);
+		Robot.shooter.set(0);
+		Robot.shooter2.set(0);
 	}
 
 	// Called when another command which requires one or more of the same
