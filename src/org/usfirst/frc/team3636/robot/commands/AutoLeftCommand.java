@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3636.robot.commands;
 
 import org.usfirst.frc.team3636.robot.Robot;
+import org.usfirst.frc.team3636.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotState;
@@ -24,10 +25,9 @@ public class AutoLeftCommand extends Command {
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
         if(gameData.length() > 0){
-        	if(gameData.charAt(0) == 'L'){//if game data starts with L
+        	if(gameData.charAt(0) == 'L'){//if alliance switch is on left
         		while(Robot.timer.get()<5){
-        			Robot.liftArm.set(1);
-					Robot.liftArm2.set(1);
+        			RobotMap.lift(true);
 					Timer.delay(.005);
 					Robot.myRobot.tankDrive(Robot.AUTO_SPEED,Robot.AUTO_SPEED+.075);
 					Timer.delay(.005);
@@ -36,25 +36,20 @@ public class AutoLeftCommand extends Command {
 				Timer.delay(1);
 				
 				Robot.myRobot.tankDrive(Robot.AUTO_SPEED,0);
-				Timer.delay(.005);//turn right towards switch
+				Timer.delay(1);//turn right towards switch
 				while(Robot.timer.get()<2){
 					Robot.myRobot.tankDrive(Robot.AUTO_SPEED,Robot.AUTO_SPEED+.075);
 					Timer.delay(.005);
 				}
 				Robot.myRobot.tankDrive(0,0);
 				Timer.delay(.005);
-//				while(Robot.timer.get()> 5 && Robot.timer.get()<9){//for 3 seconds the fly wheel will spin
-//					
-//					
-//				}
 				while(Robot.timer.get()>=9 && Robot.timer.get()<=12){//for 3 seconds the shooter executes
-					Robot.shooter.set(1);
-					Robot.shooter2.set(1);
+					RobotMap.shoot();
 					Timer.delay(.005);
 				}
 //        		System.out.println("box time");
         	}	
-			else{//if game data starts with R
+			else{//if alliance switch is on right
 				if(Robot.timer.get()<10){
 					Robot.myRobot.tankDrive(Robot.AUTO_SPEED,Robot.AUTO_SPEED+.075);
 					Timer.delay(.005);
@@ -67,9 +62,10 @@ public class AutoLeftCommand extends Command {
     		   Robot.myRobot.tankDrive(Robot.AUTO_SPEED,Robot.AUTO_SPEED+.075);
     		   Timer.delay(.005);
     	   }
+//    	   System.out.println("straight ");
        }
           
-	   //System.out.println("left ");
+	   
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -86,11 +82,7 @@ public class AutoLeftCommand extends Command {
 	// Called once after isFinished returns true.
 	@Override
 	protected void end() {
-		Robot.myRobot.tankDrive(0,0);
-		Robot.liftArm.set(0);
-		Robot.liftArm2.set(0);
-		Robot.shooter.set(0);
-		Robot.shooter2.set(0);
+		RobotMap.endAuto();
 	}
 
 	// Called when another command which requires one or more of the same

@@ -84,6 +84,7 @@ public class Robot extends IterativeRobot {
     public static final int TIME_AUTO = 15; //Change to autonomous time in seconds
     public static final double AUTO_SPEED = -.5; //This controls the speed of autonomous
     public double CURVE_CHANGE =-.01;
+    public static double AUTO_CURVE= .3;
     public final int BRIGHTNESS = 30;
     public final double Kp = 0.03;
     Command autonomousCommand;

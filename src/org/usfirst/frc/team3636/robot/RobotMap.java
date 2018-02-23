@@ -16,4 +16,38 @@ public class RobotMap {
 	// number and the module. For example you with a rangefinder:
 	// public static int rangefinderPort = 1;
 	// public static int rangefinderModule = 1;
+	
+	public static final double setLiftUp = 1;
+	public static final double setLiftDown = -setLiftUp;
+	
+	
+	public static void curve(){
+		Robot.myRobot.drive(Robot.AUTO_SPEED, Robot.AUTO_CURVE);
+		
+		
+	}
+	
+	public static void lift(boolean upDown){
+		if (upDown){
+			Robot.liftArm.set(setLiftUp);
+			Robot.liftArm2.set(setLiftUp);
+		}
+		else if (!upDown){
+			Robot.liftArm.set(setLiftDown);
+			Robot.liftArm2.set(setLiftDown);
+		}
+	}
+	
+	public static void shoot(){
+		Robot.shooter.set(1);
+		Robot.shooter2.set(1);
+	}
+	
+	public static void endAuto(){
+		Robot.myRobot.tankDrive(0,0);
+		Robot.liftArm.set(0);
+		Robot.liftArm2.set(0);
+		Robot.shooter.set(0);
+		Robot.shooter2.set(0);
+	}
 }
