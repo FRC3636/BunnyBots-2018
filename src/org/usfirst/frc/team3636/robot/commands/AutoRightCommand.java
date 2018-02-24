@@ -22,6 +22,7 @@ public class AutoRightCommand extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+		Robot.gyro.reset();
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
         if(gameData.length() > 0){
@@ -33,48 +34,58 @@ public class AutoRightCommand extends Command {
 					Timer.delay(.005);
 				}
 				Robot.myRobot.tankDrive(0,0);
-				Timer.delay(1);
-				
-				Robot.myRobot.tankDrive(Robot.AUTO_SPEED,0);
-				Timer.delay(1);//turn right towards switch
-				while(Robot.timer.get()<2){
+				Timer.delay(.005);
+				while(Robot.timer.get()>=5 && Robot.timer.get()<=7){//turn left during interval
+					Robot.myRobot.tankDrive(0,Robot.AUTO_SPEED);
+					Timer.delay(.005);
+				}
+					
+//				while((Robot.timer.get()>=5 && Robot.timer.get()<=7)){//experimental gyro turning
+//					Robot.myRobot.tankDrive(0,Robot.AUTO_SPEED);
+//					Timer.delay(.005);
+//				//Allowed margin of error to stop turning
+//					if(Robot.gyro.getAngle()>=87.5 && Robot.gyro.getAngle()<=92.5){
+//						break;
+//					}
+//				}	
+					
+				while(Robot.timer.get()>=8 && Robot.timer.get()<=10){
 					Robot.myRobot.tankDrive(Robot.AUTO_SPEED,Robot.AUTO_SPEED+.075);
 					Timer.delay(.005);
 				}
 				Robot.myRobot.tankDrive(0,0);
 				Timer.delay(.005);
-				while(Robot.timer.get()>=9 && Robot.timer.get()<=12){//for 3 seconds the shooter executes
-					RobotMap.shoot();
+				while(Robot.timer.get()>=11 && Robot.timer.get()<=14){//for 3 seconds the shooter executes
+					RobotMap.shoot(true);
 					Timer.delay(.005);
 				}
 //        		System.out.println("box time");
         	}	
 			else{//if alliance switch is on left
-				if(Robot.timer.get()<10){
-					Robot.myRobot.tankDrive(Robot.AUTO_SPEED,Robot.AUTO_SPEED+.075);
-					Timer.delay(.005);
-				}
+				while(Robot.timer.get()<14){
+		   			Robot.myRobot.tankDrive(Robot.AUTO_SPEED,Robot.AUTO_SPEED+.075);
+		   			}
 //				System.out.println("straight");
 			}
        } 
-       else {
-    	   if(Robot.timer.get()<10){
-    		   Robot.myRobot.tankDrive(Robot.AUTO_SPEED,Robot.AUTO_SPEED+.075);
-    		   Timer.delay(.005);
-    	   }
-//    	   System.out.println("straight ");
-       }
+//       else {
+//    	   while(Robot.timer.get()<14){
+//   			Robot.myRobot.tankDrive(Robot.AUTO_SPEED,Robot.AUTO_SPEED+.075);
+//   			}
+////    	   System.out.println("straight ");
+//       }
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		if(RobotState.isAutonomous()){
-			return false;
-		}
-		else{
-			return true;
-		}	
+//		if(RobotState.isAutonomous()){
+//			return false;
+//		}
+//		else{
+//			return true;
+//		}
+		return true;
 	}
 
 	// Called once after isFinished returns true

@@ -36,15 +36,20 @@ public class AutoMid extends Command {
 					RobotMap.curve();
 					Timer.delay(.005);				
 				}
+        		Robot.liftArm.set(0);
+				Timer.delay(.005);
         		Robot.myRobot.tankDrive(0,0);
 				Timer.delay(.005);
 				while(Robot.timer.get()>=5 && Robot.timer.get()<=8){//for 3 seconds the shooter executes
-					RobotMap.shoot();
+					RobotMap.shoot(true);
 					Timer.delay(.005);
 				}
         	}
         	else{//Drive straight if switch is on left
-        		Robot.myRobot.tankDrive(Robot.AUTO_SPEED,Robot.AUTO_SPEED+.075);
+        		while(Robot.timer.get()<14){
+        			Robot.myRobot.tankDrive(Robot.AUTO_SPEED,Robot.AUTO_SPEED+.075);
+        		}
+        		
         	}
         }
         	
@@ -57,12 +62,13 @@ public class AutoMid extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		if(RobotState.isAutonomous()){
-			return false;
-		}
-		else{
-			return true;
-		}
+//		if(RobotState.isAutonomous()){
+//			return false;
+//		}
+//		else{
+//			return true;
+//		}
+		return true;
 	}
 
 	// Called once after isFinished returns true

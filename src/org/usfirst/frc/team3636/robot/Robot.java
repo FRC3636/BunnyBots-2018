@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team3636.robot.commands.AutoLeftCommand;
 import org.usfirst.frc.team3636.robot.commands.AutoRightCommand;
+import org.usfirst.frc.team3636.robot.commands.AutoStraight;
 import org.usfirst.frc.team3636.robot.commands.AutoMid;
 import org.usfirst.frc.team3636.robot.subsystems.ExampleSubsystem;
 
@@ -69,7 +70,7 @@ public class Robot extends IterativeRobot {
     public Compressor com = new Compressor(0);
     public DigitalInput leftSwitch = new DigitalInput(0);
     public DigitalInput rightSwitch = new DigitalInput(1);
-    public ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+    public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
     public static Spark shooter = new Spark(4);
     public static Spark shooter2 = new Spark(5);
     public static Spark liftArm = new Spark(6);
@@ -98,8 +99,9 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	//this comment lamo
         oi = new OI();
-        chooser.addDefault("Middle Auto/Left Straight Auto/Right Straight Auto", new AutoMid());
+        chooser.addDefault("Straight Auto", new AutoStraight());
         chooser.addObject("Left Auto", new AutoLeftCommand());
+        chooser.addObject("Middle Auto", new AutoMid());
         chooser.addObject("Right Auto", new AutoRightCommand());
         SmartDashboard.putData("Auto mode chooser", chooser);
         new Thread(() -> {
@@ -268,75 +270,132 @@ public class Robot extends IterativeRobot {
         
         double duration = 3.0;
 
-        if (leftStick.getTrigger()){ //Extend piston
-//        	if(com.getPressureSwitchValue()){
-//        	System.out.println(com.getClosedLoopControl());
-//        	}
-        	System.out.println(pressureSwitch);
-//        	myRobot.tankDrive(.5, 0);
-//        	com.setClosedLoopControl(true);
-        	sol2.set(DoubleSolenoid.Value.kForward);
-        	//sol2.set(false);//
-//        	com.start();
-//        	System.out.println(com.enabled());
-        	
-        	
-        	timer.delay(0.005);
-        	
+//        if (leftStick.getTrigger()){ //Extend piston
+////        	if(com.getPressureSwitchValue()){
+////        	System.out.println(com.getClosedLoopControl());
+////        	}
+//        	System.out.println(pressureSwitch);
+////        	myRobot.tankDrive(.5, 0);
+////        	com.setClosedLoopControl(true);
+//        	sol2.set(DoubleSolenoid.Value.kForward);
+//        	//sol2.set(false);//
+////        	com.start();
+////        	System.out.println(com.enabled());
+//        	
+//        	
+//        	timer.delay(0.005);
+//        	
+//        
+//        }
+//        /*else{
+//        	sol2.set(DoubleSolenoid.Value.kOff);
+//        	timer.delay(0.005);
+//        }*/
+//        else if (rightStick.getTrigger()){//Retract piston
+//        	
+//        	//sol.set(false);
+//        	sol2.set(DoubleSolenoid.Value.kReverse);
+////        	sol.set(DoubleSolenoid.Value.kReverse);
+////        	sol.set(false);
+//        	//sol.set(DoubleSolenoid.Value.);
+////        	System.out.println(sol.get());
+////        	sol.set(false);
+//        	//com.stop();
+//        	timer.delay(0.005);
+////            com.set(false);
+////            com.setPulseDuration(duration);
+////            com.startPulse();
+//        }
+//        else if(rightStick.getRawButton(4)){//Retract with single solenoid
+//        	sol2.set(DoubleSolenoid.Value.kReverse);
+//        	sol.set(true);
+//        	timer.delay(0.005);
+//        }
+//        else if(leftStick.getRawButton(2)){
+//        	shooter.set(1.0);
+//        	shooter2.set(1.0);
+//        	timer.delay(0.005);
+//        }
+//        else if(rightStick.getRawButton(2)){
+//        	shooter.set(-1.0);
+//        	shooter2.set(-1.0);
+//        	timer.delay(0.005);
+//        }
+//        else if(leftStick.getRawButton(3)){
+//        	liftArm.set(1.0);
+//        	liftArm2.set(1.0);
+//        	timer.delay(0.005);
+//        }
+//        else if(rightStick.getRawButton(3)){
+//        	shooter.set(-1.0);
+//        	shooter2.set(-1.0);
+//        	timer.delay(0.005);
+//        }
+//        else{
+//        	sol.set(false);
+//        	sol2.set(DoubleSolenoid.Value.kOff);
+//        	shooter.set(0);
+//        	shooter2.set(0);
+//        	liftArm.set(0);
+//        	liftArm2.set(0);
+//        	timer.delay(0.005);
+//        }
         
+        
+        //new buttons and triggers: 
+        if (leftStick.getTrigger()){//Flywheel shooter inwards
+        	shooter.set(RobotMap.reverseDirect);
+        	shooter2.set(RobotMap.forwardDirect);
+        	Timer.delay(.005);
         }
-        /*else{
+        else if (rightStick.getTrigger()){//Flywheel shooter outwards
+        	shooter.set(RobotMap.forwardDirect);
+        	shooter2.set(RobotMap.reverseDirect);
+        	Timer.delay(0.005);
+        }
+        else{
+        	shooter.set(0);
+        	shooter2.set(0);
+        	Timer.delay(.005);
+        }
+        
+        if (leftStick.getRawButton(2)){//Lower shooting arm
+        	liftArm.set(RobotMap.reverseDirect);
+        	liftArm2.set(RobotMap.forwardDirect);
+        	Timer.delay(.005);
+        }
+        else if (rightStick.getRawButton(2)){//Raise shooting arm
+        	liftArm.set(RobotMap.forwardDirect);
+        	liftArm2.set(RobotMap.reverseDirect);
+        	Timer.delay(.005);
+        }
+        else{
+        	liftArm.set(0);
+        	liftArm2.set(0);
+        	Timer.delay(.005);
+        }
+        
+        if (leftStick.getRawButton(3)){//Emergency extend piston w/ double solenoid
+        	sol.set(false);
+        	sol2.set(DoubleSolenoid.Value.kForward);
+        	Timer.delay(.005);
+        }
+        else if (rightStick.getRawButton(3)){//Retract piston w/ single solenoid
+        	sol2.set(DoubleSolenoid.Value.kReverse);
+        	Timer.delay(.005);
+        }
+        else{
         	sol2.set(DoubleSolenoid.Value.kOff);
-        	timer.delay(0.005);
-        }*/
-        else if (rightStick.getTrigger()){//Retract piston
-        	
-        	//sol.set(false);
-        	sol2.set(DoubleSolenoid.Value.kReverse);
-//        	sol.set(DoubleSolenoid.Value.kReverse);
-//        	sol.set(false);
-        	//sol.set(DoubleSolenoid.Value.);
-//        	System.out.println(sol.get());
-//        	sol.set(false);
-        	//com.stop();
-        	timer.delay(0.005);
-//            com.set(false);
-//            com.setPulseDuration(duration);
-//            com.startPulse();
+        	Timer.delay(.005);
         }
-        else if(rightStick.getRawButton(4)){//Retract with single solenoid
-        	sol2.set(DoubleSolenoid.Value.kReverse);
+        
+        if (rightStick.getRawButton(4)){//Primary extend piston w/ single solenoid
         	sol.set(true);
-        	timer.delay(0.005);
-        }
-        else if(leftStick.getRawButton(2)){
-        	shooter.set(1.0);
-        	shooter2.set(1.0);
-        	timer.delay(0.005);
-        }
-        else if(rightStick.getRawButton(2)){
-        	shooter.set(-1.0);
-        	shooter2.set(-1.0);
-        	timer.delay(0.005);
-        }
-        else if(leftStick.getRawButton(3)){
-        	liftArm.set(1.0);
-        	liftArm2.set(1.0);
-        	timer.delay(0.005);
-        }
-        else if(rightStick.getRawButton(3)){
-        	shooter.set(-1.0);
-        	shooter2.set(-1.0);
-        	timer.delay(0.005);
+        	Timer.delay(.005);
         }
         else{
         	sol.set(false);
-        	sol2.set(DoubleSolenoid.Value.kOff);
-        	shooter.set(0);
-        	shooter2.set(0);
-        	liftArm.set(0);
-        	liftArm2.set(0);
-        	timer.delay(0.005);
+        	Timer.delay(.005);
         }
         
     }
