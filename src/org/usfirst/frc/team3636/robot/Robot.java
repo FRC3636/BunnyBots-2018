@@ -189,7 +189,7 @@ public class Robot extends IterativeRobot {
 ////	        while (timer.get() < TIME_AUTO && RobotState.isAutonomous()){
 ////	        	double angle = gyro.getAngle();
 //////	    		myRobot.drive(-1.0, -angle * Kp);
-//////	    		Timer.delay(0.005);
+//////	    		Timer.delay(RobotMap.timerDelay);
 ////	    		CURVE_CHANGE = .15; //turn right
 ////	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
 ////	        	Timer.delay(.1);
@@ -236,7 +236,7 @@ public class Robot extends IterativeRobot {
 //        		//Pneumatics code here
 //        		 
 //        	}
-//        	timer.delay(.005);
+//        	timer.delay(RobotMap.timerDelay);
 //        	
 //        }
         
@@ -264,7 +264,7 @@ public class Robot extends IterativeRobot {
         double leftval = leftStick.getY();
         double rightval= rightStick.getY();
         myRobot.tankDrive(leftval, rightval);
-        Timer.delay(0.005); // wait for a motor update time
+        Timer.delay(RobotMap.timerDelay); // wait for a motor update time
         boolean pressureSwitch = com.getPressureSwitchValue();
 
         
@@ -283,13 +283,13 @@ public class Robot extends IterativeRobot {
 ////        	System.out.println(com.enabled());
 //        	
 //        	
-//        	timer.delay(0.005);
+//        	timer.delay(RobotMap.timerDelay);
 //        	
 //        
 //        }
 //        /*else{
 //        	sol2.set(DoubleSolenoid.Value.kOff);
-//        	timer.delay(0.005);
+//        	timer.delay(RobotMap.timerDelay);
 //        }*/
 //        else if (rightStick.getTrigger()){//Retract piston
 //        	
@@ -301,7 +301,7 @@ public class Robot extends IterativeRobot {
 ////        	System.out.println(sol.get());
 ////        	sol.set(false);
 //        	//com.stop();
-//        	timer.delay(0.005);
+//        	timer.delay(RobotMap.timerDelay);
 ////            com.set(false);
 ////            com.setPulseDuration(duration);
 ////            com.startPulse();
@@ -309,27 +309,27 @@ public class Robot extends IterativeRobot {
 //        else if(rightStick.getRawButton(4)){//Retract with single solenoid
 //        	sol2.set(DoubleSolenoid.Value.kReverse);
 //        	sol.set(true);
-//        	timer.delay(0.005);
+//        	timer.delay(RobotMap.timerDelay);
 //        }
 //        else if(leftStick.getRawButton(2)){
 //        	shooter.set(1.0);
 //        	shooter2.set(1.0);
-//        	timer.delay(0.005);
+//        	timer.delay(RobotMap.timerDelay);
 //        }
 //        else if(rightStick.getRawButton(2)){
 //        	shooter.set(-1.0);
 //        	shooter2.set(-1.0);
-//        	timer.delay(0.005);
+//        	timer.delay(RobotMap.timerDelay);
 //        }
 //        else if(leftStick.getRawButton(3)){
 //        	liftArm.set(1.0);
 //        	liftArm2.set(1.0);
-//        	timer.delay(0.005);
+//        	timer.delay(RobotMap.timerDelay);
 //        }
 //        else if(rightStick.getRawButton(3)){
 //        	shooter.set(-1.0);
 //        	shooter2.set(-1.0);
-//        	timer.delay(0.005);
+//        	timer.delay(RobotMap.timerDelay);
 //        }
 //        else{
 //        	sol.set(false);
@@ -338,7 +338,7 @@ public class Robot extends IterativeRobot {
 //        	shooter2.set(0);
 //        	liftArm.set(0);
 //        	liftArm2.set(0);
-//        	timer.delay(0.005);
+//        	timer.delay(RobotMap.timerDelay);
 //        }
         
         
@@ -346,56 +346,56 @@ public class Robot extends IterativeRobot {
         if (leftStick.getTrigger()){//Flywheel shooter inwards
         	shooter.set(RobotMap.reverseDirect);
         	shooter2.set(RobotMap.forwardDirect);
-        	Timer.delay(.005);
+        	Timer.delay(RobotMap.timerDelay);
         }
         else if (rightStick.getTrigger()){//Flywheel shooter outwards
         	shooter.set(RobotMap.forwardDirect);
         	shooter2.set(RobotMap.reverseDirect);
-        	Timer.delay(0.005);
+        	Timer.delay(RobotMap.timerDelay);
         }
         else{
         	shooter.set(0);
         	shooter2.set(0);
-        	Timer.delay(.005);
+        	Timer.delay(RobotMap.timerDelay);
         }
         
         if (leftStick.getRawButton(2)){//Lower shooting arm
         	liftArm.set(RobotMap.reverseDirect);
         	liftArm2.set(RobotMap.forwardDirect);
-        	Timer.delay(.005);
+        	Timer.delay(RobotMap.timerDelay);
         }
         else if (rightStick.getRawButton(2)){//Raise shooting arm
         	liftArm.set(RobotMap.forwardDirect);
         	liftArm2.set(RobotMap.reverseDirect);
-        	Timer.delay(.005);
+        	Timer.delay(RobotMap.timerDelay);
         }
         else{
         	liftArm.set(0);
         	liftArm2.set(0);
-        	Timer.delay(.005);
+        	Timer.delay(RobotMap.timerDelay);
         }
         
         if (leftStick.getRawButton(3)){//Emergency extend piston w/ double solenoid
         	sol.set(false);
         	sol2.set(DoubleSolenoid.Value.kForward);
-        	Timer.delay(.005);
+        	Timer.delay(RobotMap.timerDelay);
         }
         else if (rightStick.getRawButton(3)){//Retract piston w/ single solenoid
         	sol2.set(DoubleSolenoid.Value.kReverse);
-        	Timer.delay(.005);
+        	Timer.delay(RobotMap.timerDelay);
         }
         else{
         	sol2.set(DoubleSolenoid.Value.kOff);
-        	Timer.delay(.005);
+        	Timer.delay(RobotMap.timerDelay);
         }
         
         if (rightStick.getRawButton(4)){//Primary extend piston w/ single solenoid
         	sol.set(true);
-        	Timer.delay(.005);
+        	Timer.delay(RobotMap.timerDelay);
         }
         else{
         	sol.set(false);
-        	Timer.delay(.005);
+        	Timer.delay(RobotMap.timerDelay);
         }
         
     }
