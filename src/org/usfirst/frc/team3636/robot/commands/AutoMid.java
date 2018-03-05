@@ -30,25 +30,27 @@ public class AutoMid extends Command {
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
         if(gameData.length() > 0){
         	if(gameData.charAt(0) == 'R'){ //If alliance switch is on right, curve to score
-        		while(Robot.timer.get()<5){//lift arm while curving
-        			RobotMap.lift(true);
-					Timer.delay(.005);
-					RobotMap.curve();
-					Timer.delay(.005);				
-				}
-        		Robot.liftArm.set(0);
-				Timer.delay(.005);
-        		Robot.myRobot.tankDrive(0,0);
-				Timer.delay(.005);
-				while(Robot.timer.get()>=5 && Robot.timer.get()<=8){//for 3 seconds the shooter executes
-					RobotMap.shoot(true);
-					Timer.delay(.005);
-				}
+//        		while(Robot.timer.get()<5){//lift arm while curving
+//        			RobotMap.lift(true);
+//					Timer.delay(.005);
+//					RobotMap.curve();
+//					Timer.delay(.005);				
+//				}
+//        		Robot.liftArm.set(0);
+//				Timer.delay(.005);
+//        		Robot.myRobot.tankDrive(0,0);
+//				Timer.delay(.005);
+//				while(Robot.timer.get()>=5 && Robot.timer.get()<=8){//for 3 seconds the shooter executes
+//					RobotMap.shoot(true);
+//					Timer.delay(.005);
+//				}
+				System.out.println("mid score");
         	}
         	else{//Drive straight if switch is on left
-        		while(Robot.timer.get()<14){
-        			Robot.myRobot.tankDrive(Robot.AUTO_SPEED,Robot.AUTO_SPEED+.075);
-        		}
+//        		while(Robot.timer.get()<14){
+//        			Robot.myRobot.tankDrive(Robot.AUTO_SPEED,Robot.AUTO_SPEED+.075);
+//        		}
+        		System.out.println("mid straight");
         		
         	}
         	

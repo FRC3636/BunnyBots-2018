@@ -54,11 +54,11 @@ public class Robot extends IterativeRobot {
     
     public static RobotDrive myRobot = new RobotDrive(0,1,2,3); // class that handles basic drive
     // operations
-//    Spark m_frontLeft = new Spark(4);
-//    Spark m_rearLeft = new Spark(2);
+//    Spark m_frontLeft = new Spark(0);
+//    Spark m_rearLeft = new Spark(1);
 //    SpeedControllerGroup m_left = new SpeedControllerGroup(m_frontLeft, m_rearLeft);
 //
-//    Spark m_frontRight = new Spark(5);
+//    Spark m_frontRight = new Spark(2);
 //    Spark m_rearRight = new Spark(3);
 //    SpeedControllerGroup m_right = new SpeedControllerGroup(m_frontRight, m_rearRight);
 //
@@ -71,10 +71,10 @@ public class Robot extends IterativeRobot {
     public DigitalInput leftSwitch = new DigitalInput(0);
     public DigitalInput rightSwitch = new DigitalInput(1);
     public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-    public static Spark shooter = new Spark(4);
-    public static Spark shooter2 = new Spark(5);
-    public static Spark liftArm = new Spark(6);
-    public static Spark liftArm2 = new Spark(7);
+    public static Spark liftArm = new Spark(4);
+    public static Spark liftArm2 = new Spark(5);
+    public static Spark shooter = new Spark(6);
+    public static Spark shooter2 = new Spark(7); 
     
     public static Timer timer = new Timer();
 
@@ -104,6 +104,8 @@ public class Robot extends IterativeRobot {
         chooser.addObject("Middle Auto", new AutoMid());
         chooser.addObject("Right Auto", new AutoRightCommand());
         SmartDashboard.putData("Auto mode chooser", chooser);
+        sol2.set(DoubleSolenoid.Value.kOff);
+        //com.setClosedLoopControl(false);
         new Thread(() -> {
             UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
             camera.setResolution(640, 480);
@@ -358,7 +360,21 @@ public class Robot extends IterativeRobot {
         	shooter2.set(0);
         	Timer.delay(RobotMap.timerDelay);
         }
-        
+//        if (leftStick.getRawButton(2)){//Flywheel shooter inwards
+//        	shooter.set(RobotMap.reverseDirect);
+//        	shooter2.set(RobotMap.forwardDirect);
+//        	Timer.delay(RobotMap.timerDelay);
+//        }
+//        else if (rightStick.getRawButton(2)){//Flywheel shooter outwards
+//        	shooter.set(RobotMap.forwardDirect);
+//        	shooter2.set(RobotMap.reverseDirect);
+//        	Timer.delay(RobotMap.timerDelay);
+//        }
+//        else{
+//        	shooter.set(0);
+//        	shooter2.set(0);
+//        	Timer.delay(RobotMap.timerDelay);
+//        }
         if (leftStick.getRawButton(2)){//Lower shooting arm
         	liftArm.set(RobotMap.reverseDirect);
         	liftArm2.set(RobotMap.forwardDirect);
@@ -380,7 +396,7 @@ public class Robot extends IterativeRobot {
         	sol2.set(DoubleSolenoid.Value.kForward);
         	Timer.delay(RobotMap.timerDelay);
         }
-        else if (rightStick.getRawButton(3)){//Retract piston w/ single solenoid
+        else if (rightStick.getRawButton(3)){//Retract piston w/ double solenoid
         	sol2.set(DoubleSolenoid.Value.kReverse);
         	Timer.delay(RobotMap.timerDelay);
         }
@@ -390,6 +406,7 @@ public class Robot extends IterativeRobot {
         }
         
         if (rightStick.getRawButton(4)){//Primary extend piston w/ single solenoid
+        	sol2.set(DoubleSolenoid.Value.kOff);
         	sol.set(true);
         	Timer.delay(RobotMap.timerDelay);
         }
