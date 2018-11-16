@@ -140,72 +140,7 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
-////        boolean experimentOn = true;
-////        if (experimentOn == false){
-////	        System.out.println("time: " + timer.get());
-////	        while (timer.get() < TIME_AUTO && RobotState.isAutonomous()){
-////	        	//myRobot.drive(AUTO_SPEED,CURVE_CHANGE);
-////	        	myRobot.tankDrive(AUTO_SPEED,AUTO_SPEED+.075);
-////	        
-////	        	
-////	        }
-////        }
-////        //more experiments:   
-////        else if (experimentOn == true){
-////        	gyro.reset();
-////	        while (timer.get() < TIME_AUTO && RobotState.isAutonomous()){
-////	        	double angle = gyro.getAngle();
-//////	    		myRobot.drive(-1.0, -angle * Kp);
-//////	    		Timer.delay(RobotMap.timerDelay);
-////	    		CURVE_CHANGE = .15; //turn right
-////	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
-////	        	Timer.delay(.1);
-////	        	CURVE_CHANGE = -.1; //turn left
-////	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
-////	        	Timer.delay(.1);
-////	        }
-////        }
-//        boolean leftOn=false;
-//        boolean rightOn=false;
-//        
-//        while (timer.get() < TIME_AUTO && RobotState.isAutonomous()){
-//        	leftOn = leftSwitch.get();
-//            rightOn = rightSwitch.get();
-//        	if(leftOn && rightOn){ //Left mode
-//        		System.out.println(rightOn);
-//        		System.out.println("right ");
-////        		CURVE_CHANGE = .15; //turn right
-////	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
-////	        	Timer.delay(.1);
-////	        	CURVE_CHANGE = -.1; //turn left
-////	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
-////	        	Timer.delay(.1);
-//        	}
-//        	else if(!leftOn && rightOn){ //Right mode
-//        		System.out.println("right");
-////        		CURVE_CHANGE = .15; //turn right
-////	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
-////	        	Timer.delay(.1);
-////	        	CURVE_CHANGE = -.1; //turn left
-////	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
-////	        	Timer.delay(.1);
-//        	}
-//        	else{// Middle mode w/ box dump
-//        		System.out.println(leftOn);
-////        		while(timer.get() <4){
-////        			CURVE_CHANGE = .15; //turn right
-////    	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
-////    	        	Timer.delay(.1);
-////    	        	CURVE_CHANGE = -.1; //turn left
-////    	        	myRobot.arcadeDrive(AUTO_SPEED, CURVE_CHANGE);
-////    	        	Timer.delay(.1);
-////        		}
-//        		//Pneumatics code here
-//        		 
-//        	}
-//        	timer.delay(RobotMap.timerDelay);
-//        	
-//        }
+
         
     }
 
@@ -237,78 +172,7 @@ public class Robot extends IterativeRobot {
         
         double duration = 3.0;
 
-//        if (leftStick.getTrigger()){ //Extend piston
-////        	if(com.getPressureSwitchValue()){
-////        	System.out.println(com.getClosedLoopControl());
-////        	}
-//        	System.out.println(pressureSwitch);
-////        	myRobot.tankDrive(.5, 0);
-////        	com.setClosedLoopControl(true);
-//        	sol2.set(DoubleSolenoid.Value.kForward);
-//        	//sol2.set(false);//
-////        	com.start();
-////        	System.out.println(com.enabled());
-//        	
-//        	
-//        	timer.delay(RobotMap.timerDelay);
-//        	
-//        
-//        }
-//        /*else{
-//        	sol2.set(DoubleSolenoid.Value.kOff);
-//        	timer.delay(RobotMap.timerDelay);
-//        }*/
-//        else if (rightStick.getTrigger()){//Retract piston
-//        	
-//        	//sol.set(false);
-//        	sol2.set(DoubleSolenoid.Value.kReverse);
-////        	sol.set(DoubleSolenoid.Value.kReverse);
-////        	sol.set(false);
-//        	//sol.set(DoubleSolenoid.Value.);
-////        	System.out.println(sol.get());
-////        	sol.set(false);
-//        	//com.stop();
-//        	timer.delay(RobotMap.timerDelay);
-////            com.set(false);
-////            com.setPulseDuration(duration);
-////            com.startPulse();
-//        }
-//        else if(rightStick.getRawButton(4)){//Retract with single solenoid
-//        	sol2.set(DoubleSolenoid.Value.kReverse);
-//        	sol.set(true);
-//        	timer.delay(RobotMap.timerDelay);
-//        }
-//        else if(leftStick.getRawButton(2)){
-//        	shooter.set(1.0);
-//        	shooter2.set(1.0);
-//        	timer.delay(RobotMap.timerDelay);
-//        }
-//        else if(rightStick.getRawButton(2)){
-//        	shooter.set(-1.0);
-//        	shooter2.set(-1.0);
-//        	timer.delay(RobotMap.timerDelay);
-//        }
-//        else if(leftStick.getRawButton(3)){
-//        	liftArm.set(1.0);
-//        	liftArm2.set(1.0);
-//        	timer.delay(RobotMap.timerDelay);
-//        }
-//        else if(rightStick.getRawButton(3)){
-//        	shooter.set(-1.0);
-//        	shooter2.set(-1.0);
-//        	timer.delay(RobotMap.timerDelay);
-//        }
-//        else{
-//        	sol.set(false);
-//        	sol2.set(DoubleSolenoid.Value.kOff);
-//        	shooter.set(0);
-//        	shooter2.set(0);
-//        	liftArm.set(0);
-//        	liftArm2.set(0);
-//        	timer.delay(RobotMap.timerDelay);
-//        }
-        
-        
+
         //new buttons and triggers: 
         if (leftStick.getTrigger()){//Flywheel shooter inwards
         	shooter.set(RobotMap.reverseDirect);
@@ -325,21 +189,6 @@ public class Robot extends IterativeRobot {
         	shooter2.set(0);
         	Timer.delay(RobotMap.timerDelay);
         }
-//        if (leftStick.getRawButton(2)){//Flywheel shooter inwards
-//        	shooter.set(RobotMap.reverseDirect);
-//        	shooter2.set(RobotMap.forwardDirect);
-//        	Timer.delay(RobotMap.timerDelay);
-//        }
-//        else if (rightStick.getRawButton(2)){//Flywheel shooter outwards
-//        	shooter.set(RobotMap.forwardDirect);
-//        	shooter2.set(RobotMap.reverseDirect);
-//        	Timer.delay(RobotMap.timerDelay);
-//        }
-//        else{
-//        	shooter.set(0);
-//        	shooter2.set(0);
-//        	Timer.delay(RobotMap.timerDelay);
-//        }
         if (leftStick.getRawButton(2)){//Lower shooting arm
         	liftArm.set(RobotMap.reverseDirect);
         	liftArm2.set(RobotMap.forwardDirect);
