@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SPI.Port;
@@ -34,7 +33,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team3636.robot.commands.AutoLeftCommand;
 import org.usfirst.frc.team3636.robot.commands.AutoRightCommand;
-import org.usfirst.frc.team3636.robot.commands.AutoStraight;
 import org.usfirst.frc.team3636.robot.commands.AutoMid;
 import org.usfirst.frc.team3636.robot.subsystems.ExampleSubsystem;
 
@@ -50,19 +48,7 @@ public class Robot extends IterativeRobot {
 //	private static final boolean testCommit = true;
 
     public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-    public static OI oi;
-    
-    public static RobotDrive myRobot = new RobotDrive(0,1,2,3); // class that handles basic drive
-    // operations
-//    Spark m_frontLeft = new Spark(0);
-//    Spark m_rearLeft = new Spark(1);
-//    SpeedControllerGroup m_left = new SpeedControllerGroup(m_frontLeft, m_rearLeft);
-//
-//    Spark m_frontRight = new Spark(2);
-//    Spark m_rearRight = new Spark(3);
-//    SpeedControllerGroup m_right = new SpeedControllerGroup(m_frontRight, m_rearRight);
-//
-//    DifferentialDrive myRobot = new DifferentialDrive(m_left, m_right);
+    DifferentialDrive myRobot = new DifferentialDrive(new Spark(0), new Spark(1));
     public Joystick leftStick = new Joystick(0);
     public Joystick rightStick = new Joystick(1);
     public Solenoid sol = new Solenoid(0,0); //device id 0, channel 0
@@ -97,32 +83,11 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void robotInit() {
-    	//this comment lamo
-        oi = new OI();
-        chooser.addDefault("Straight Auto", new AutoStraight());
         chooser.addObject("Left Auto", new AutoLeftCommand());
         chooser.addObject("Middle Auto", new AutoMid());
         chooser.addObject("Right Auto", new AutoRightCommand());
         SmartDashboard.putData("Auto mode chooser", chooser);
         sol2.set(DoubleSolenoid.Value.kOff);
-        //com.setClosedLoopControl(false);
-        new Thread(() -> {
-            UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-            camera.setResolution(640, 480);
-            camera.setFPS(60);
-            camera.setBrightness(BRIGHTNESS);
-//            CvSink cvSink = CameraServer.getInstance().getVideo();
-//            CvSource outputStream = CameraServer.getInstance().putVideo("Blur", 640, 480);
-//            
-//            Mat source = new Mat();
-//            Mat output = new Mat();
-//            
-//            while(!Thread.interrupted()) {
-//                cvSink.grabFrame(source);
-//                Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
-//                outputStream.putFrame(output);
-//            }
-        }).start();
     }
 
     /**
