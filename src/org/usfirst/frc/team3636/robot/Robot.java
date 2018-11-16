@@ -423,5 +423,6 @@ public class Robot extends IterativeRobot {
     @Override
     public void testPeriodic() {
         //LiveWindow.run();
+    	System.out.println("random print statement");
     }
 }
