@@ -1,6 +1,6 @@
 package org.usfirst.frc.team3636.robot;
 
-import java.util.Scanner;
+//import java.util.Scanner;
 
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
@@ -63,10 +63,6 @@ public class Robot extends IterativeRobot {
     public static Spark shooter2 = new Spark(7); 
     
     public static Timer timer = new Timer();
-
-//    public final double autoleft = -.25; 
-//    public final double autoright = -.25;
-//    public final double timerdelay = .1;
     public final int motorspeed = 1; 
     public static final int TIME_AUTO = 15; //Change to autonomous time in seconds
     public static final double AUTO_SPEED = -.5; //This controls the speed of autonomous
@@ -75,7 +71,7 @@ public class Robot extends IterativeRobot {
     public final int BRIGHTNESS = 30;
     public final double Kp = 0.03;
     Command autonomousCommand;
-    SendableChooser chooser = new SendableChooser();
+    SendableChooser chooser = new SendableChooser<Command>();
 
     /**
      * This function is run when the robot is first started up and should be
@@ -236,7 +232,7 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void testPeriodic() {
-        //LiveWindow.run();
+        LiveWindow.run();
     	System.out.println("random print statement");
     }
 }
