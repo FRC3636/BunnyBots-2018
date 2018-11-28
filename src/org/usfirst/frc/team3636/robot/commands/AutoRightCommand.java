@@ -4,8 +4,8 @@ import org.usfirst.frc.team3636.robot.Robot;
 import org.usfirst.frc.team3636.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotState;
-import edu.wpi.first.wpilibj.Timer;
+//import edu.wpi.first.wpilibj.RobotState;
+//import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class AutoRightCommand extends Command {
