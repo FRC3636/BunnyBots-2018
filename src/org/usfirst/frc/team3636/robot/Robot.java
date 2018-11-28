@@ -2,28 +2,28 @@ package org.usfirst.frc.team3636.robot;
 
 //import java.util.Scanner;
 
-import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
+//import org.opencv.core.Mat;
+//import org.opencv.imgproc.Imgproc;
 
-import edu.wpi.cscore.CvSink;
-import edu.wpi.cscore.CvSource;
-import edu.wpi.cscore.UsbCamera;
+//import edu.wpi.cscore.CvSink;
+//import edu.wpi.cscore.CvSource;
+//import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DigitalInput;
+//import edu.wpi.first.wpilibj.CameraServer;
+//import edu.wpi.first.wpilibj.Compressor;
+//import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotState;
+//import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.SPI.Port;
+//import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
+//import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
+//import edu.wpi.first.wpilibj.buttons.Button;
+//import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -53,9 +53,9 @@ public class Robot extends IterativeRobot {
     public Joystick rightStick = new Joystick(1);
     public Solenoid sol = new Solenoid(0,0); //device id 0, channel 0
     public DoubleSolenoid sol2 = new DoubleSolenoid(1,2); //device id 0, channel 1,2
-    public Compressor com = new Compressor(0);
-    public DigitalInput leftSwitch = new DigitalInput(0);
-    public DigitalInput rightSwitch = new DigitalInput(1);
+    //public Compressor com = new Compressor(0);
+    //public DigitalInput leftSwitch = new DigitalInput(0);
+    //public DigitalInput rightSwitch = new DigitalInput(1);
     public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
     public static Spark liftArm = new Spark(4);
     public static Spark liftArm2 = new Spark(5);
@@ -63,13 +63,13 @@ public class Robot extends IterativeRobot {
     public static Spark shooter2 = new Spark(7); 
     
     public static Timer timer = new Timer();
-    public final int motorspeed = 1; 
-    public static final int TIME_AUTO = 15; //Change to autonomous time in seconds
-    public static final double AUTO_SPEED = -.5; //This controls the speed of autonomous
-    public double CURVE_CHANGE =-.01;
-    public static double AUTO_CURVE= -.15;
-    public final int BRIGHTNESS = 30;
-    public final double Kp = 0.03;
+    //public final int motorspeed = 1;
+    //public static final int TIME_AUTO = 15; //Change to autonomous time in seconds
+    //public static final double AUTO_SPEED = -.5; //This controls the speed of autonomous
+    //public double CURVE_CHANGE =-.01;
+    //public static double AUTO_CURVE= -.15;
+    //public final int BRIGHTNESS = 30;
+    //public final double Kp = 0.03;
     Command autonomousCommand;
     SendableChooser chooser = new SendableChooser<Command>();
 
@@ -163,12 +163,8 @@ public class Robot extends IterativeRobot {
         double rightval= rightStick.getY();
         myRobot.tankDrive(leftval, rightval);
         Timer.delay(RobotMap.timerDelay); // wait for a motor update time
-        boolean pressureSwitch = com.getPressureSwitchValue();
-
-        
-        double duration = 3.0;
-
-
+        //boolean pressureSwitch = com.getPressureSwitchValue();
+        //double duration = 3.0;
         //new buttons and triggers: 
         if (leftStick.getTrigger()){//Flywheel shooter inwards
         	shooter.set(RobotMap.reverseDirect);
