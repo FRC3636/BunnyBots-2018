@@ -15,12 +15,12 @@ public class RobotMap {
 	public static final double timerDelay = .005;
 	
 	
-	public static void curve(){
+	/*public static void curve(){
 		//Robot.myRobot.drive(Robot.AUTO_SPEED, Robot.AUTO_CURVE);
 		Timer.delay(timerDelay);
-	}
+	}*/
 	
-	public static void lift(boolean liftUp){
+	/*public static void lift(boolean liftUp){
 		if (liftUp){//Lift Up
 			Robot.liftArm.set(forwardDirect);
 			Robot.liftArm2.set(reverseDirect);
@@ -31,9 +31,9 @@ public class RobotMap {
 			Robot.liftArm2.set(forwardDirect);
 			Timer.delay(timerDelay);
 		}
-	}
+	}*/
 	
-	public static void shoot(boolean shootOut){
+	/*public static void shoot(boolean shootOut){
 		if(shootOut){//Flywheel spins outwards to release boxes.
 			Robot.shooter.set(forwardDirect);
 			Robot.shooter2.set(reverseDirect);
@@ -45,7 +45,7 @@ public class RobotMap {
 			Timer.delay(timerDelay);
 		}
 		
-	}
+	}*/
 	
 	public static void endAuto(){
 		//Robot.myRobot.tankDrive(0,0);
